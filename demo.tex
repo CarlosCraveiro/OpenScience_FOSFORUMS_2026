@@ -1,0 +1,208 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Pacotes essenciais
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{standalone}
+\usepackage{tikz} % Garanta que o TikZ também está no principal
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+
+% Carregando o template Cookie
+\definecolor{cookieDemoBlue}{HTML}{356AE6}
+\usetheme[
+  accent=cookieDemoBlue,
+  progressbar=foot,
+  sectionpage=progressbar,
+  numbering=fraction,
+  block=fill
+]{cookie}
+
+% Informações da Apresentação
+\title{Open Science}
+\subtitle{A Social Duty and its Consequences for Innovation and Reproducibility}
+\author{Carlos Henrique Craveiro Aquino Veras}
+\cookieemail{carlos.craveiro@usp.br}
+\institute{Aerotech Lab - University of São Paulo}
+\date{FOSFORUMS 2026}
+\cookietagline{FOSFORUMS 2026}
+
+\begin{document}
+
+\maketitle
+
+% Slide de Apresentação Pessoal
+\begin{frame}{About Me}
+  \begin{columns}[T,onlytextwidth]
+    \column{.60\textwidth}
+      \cookiekicker{Speaker}
+      \vspace{.55em}
+      
+      \textbf{Seu Nome Aqui}
+      \vspace{.5em}
+      
+      \begin{itemize}
+          \item Sua formação ou cargo atual (ex: PhD in X, Professor at Y)
+          \item Breve background sobre sua experiência
+          \item Seu interesse ou conexão com o movimento de Open Science
+          \item Alguma curiosidade ou projeto relevante
+      \end{itemize}
+
+    \column{.35\textwidth}
+      \vspace{1em}
+      % Espaço para sua foto
+      \begin{cookiecard}[title=Hello!]
+        \centering
+        \vspace{1.5cm}
+        \textcolor{cookieMuted}{[Insert your photo here]}
+        \vspace{1.5cm}
+      \end{cookiecard}
+  \end{columns}
+\end{frame}
+
+% --- INÍCIO DO PRIMEIRO BLOCO ---
+\section{Introducing Open Science}
+
+\begin{frame}{The Pillars of the Scientific Method}
+  \begin{columns}[T,onlytextwidth]
+    \column{.55\textwidth}
+      \begin{itemize}
+        \item \textbf{Experimentation:} Observation and structured testing.
+        \item \textbf{Data-driven Validation:} Assessing assumptions based on real data.
+        \item \textbf{Publication \& Peer Review:} Exposing findings to community scrutiny.
+      \end{itemize}
+      
+      \vspace{1em}
+      \begin{alertblock}{The Catch}
+        Questioning and testing hypotheses is \textbf{only possible} if methodologies, data, and previous knowledge are available.
+      \end{alertblock}
+
+    \column{.40\textwidth}
+      % Espaço para ilustração do método científico
+      \centering
+      \vspace{1em}
+      \textcolor{cookieMuted}{\resizebox{\textwidth}{!}{\input{scientific_method.tex}}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Who Funds Scientific Research?}
+  \cookiekicker{The Financial Backbone}
+  \vspace{.5em}
+  
+  Historically, science is heavily supported by public resources:
+
+  \vspace{1em}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}
+      \begin{cookiecard}[title=Public Agencies]
+        Direct funding from taxpayers.
+        \vspace{.5em}
+        
+        \cookiebadge{NASA} \cookiebadge{FAPESP} \\
+        \cookiebadge{CNPq} \cookiebadge{CAPES}
+      \end{cookiecard}
+
+    \column{.31\textwidth}
+      \begin{cookiecard}[title=State \& Subsidies]
+        State-owned companies and subsidized private R\&D.
+        \vspace{.5em}
+        
+        \cookiebadge{Petrobras (CENPES)} \\
+        \cookiebadge{Bell Labs}
+      \end{cookiecard}
+
+    \column{.31\textwidth}
+      \begin{cookiecard}[title=Public Universities]
+        Research centers funded by Ministries of Education.
+        \vspace{.5em}
+        
+        \cookiebadge{USP} \cookiebadge{Unicamp} \\
+        \cookiebadge{UFRJ}
+      \end{cookiecard}
+  \end{columns}
+\end{frame}
+
+% Slide de impacto - fundo sólido colorido nativo do template
+\begin{frame}[standout]
+  Isn't it fair and ethical that the population has direct access to the findings of science, since they are the ones paying the bill?
+\end{frame}
+
+\begin{frame}{A Matter of Ethics and Comprehension}
+  \begin{columns}[T,onlytextwidth]
+    \column{.45\textwidth}
+      % Espaço para foto do Carl Sagan ou ilustração do livro
+      \centering
+      \vspace{2em}
+      \textcolor{cookieMuted}{\begin{figure}
+          \centering
+          \includegraphics[width=0.5\linewidth]{demon_haunted_world.jpeg}
+          \caption{Caption}
+          \label{fig:placeholder}
+      \end{figure}}
+      
+    \column{.50\textwidth}
+      \vspace{1em}
+      Direct access fosters public respect and deepens the understanding of how science works.
+      
+      \vspace{1.5em}
+      \begin{cookiequote}[Carl Sagan]
+        Science is more than a body of knowledge; it is a way of thinking.
+      \end{cookiequote}
+      \vspace{0.5em}
+      \hfill \textit{(The Demon-Haunted World)}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{What is Open Science?}
+  \begin{block}{Definition (FAPESP / UNESCO)}
+    A set of policies and actions to disseminate knowledge, making all research results \textbf{accessible}, \textbf{reusable}, and \textbf{reproducible}.
+  \end{block}
+
+  \vspace{1em}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \cookiekicker{The 3 Core Elements}
+      \begin{itemize}
+          \item \textbf{Open Access:} Publications \& articles.
+          \item \textbf{Open Data:} Raw data, models, specs.
+          \item \textbf{Open Source/Processes:} Software, algorithms, and methodologies.
+      \end{itemize}
+
+    \column{.48\textwidth}
+      \cookiekicker{The Main Goal}
+      \vspace{.5em}
+      
+      Accelerate scientific, technological, economic, and social progress through active collaboration and knowledge reuse.
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Corollaries: The Consequences of Open Science}
+  \begin{itemize}
+    \item \textbf{Efficiency in Public Spending}
+      \begin{itemize}
+        \item Reduces redundant data production.
+        \item \textit{Examples:} Human Genome Project, Data Amazon (USP).
+      \end{itemize}
+      
+    \vspace{0.5em}
+    \item \textbf{Lowering Barriers to Research}
+      \begin{itemize}
+        \item Financial relief via data/infrastructure reuse.
+        \item Better documentation enables cross-disciplinary collaboration.
+      \end{itemize}
+      
+    \vspace{0.5em}
+    \item \textbf{Boosting Industry Innovation}
+      \begin{itemize}
+        \item Clearer, replicable knowledge directly fuels market applications.
+      \end{itemize}
+      
+    \vspace{0.5em}
+    \item \textbf{Empowering Science Communication}
+      \begin{itemize}
+        \item Easier access for communicators to raise societal awareness.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,79 @@
+\documentclass[tikz,border=15pt]{standalone}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+
+\begin{document}
+
+% =========================================================================
+% PALETA DE CORES (Altere aqui para mudar a identidade visual do diagrama)
+% =========================================================================
+\definecolor{CorPassoBorda}{HTML}{1A5276}       % Azul Escuro (Borda dos passos normais)
+\definecolor{CorPassoFundo}{HTML}{EBF5FB}       % Azul Claro (Fundo dos passos normais)
+
+\definecolor{CorDestaqueBorda}{HTML}{D35400}    % Laranja Escuro (Borda dos passos em destaque)
+\definecolor{CorDestaqueFundo}{HTML}{FEF9E7}    % Laranja Claro (Fundo dos passos em destaque)
+
+\definecolor{CorHubBorda}{HTML}{7D3C98}         % Roxo Escuro (Borda do "State of the Art")
+\definecolor{CorHubFundo}{HTML}{F5EEF8}         % Roxo Claro (Fundo do "State of the Art")
+
+\definecolor{CorSetaPrincipal}{HTML}{1A5276}    % Azul (Setas do fluxo principal)
+\definecolor{CorSetaDestaque}{HTML}{D35400}    % Laranja (Setas de conexão com o Hub)
+\definecolor{CorSetaFeedback}{HTML}{7D3C98}     % Roxo (Setas tracejadas de retorno)
+% =========================================================================
+
+\begin{tikzpicture}[
+    node distance=1.2cm and 2.2cm,
+    >=Stealth,
+    thick,
+    font=\sffamily\small,
+    % Configuração dos Estilos usando as cores definidas acima
+    stepbox/.style={rectangle, draw=CorPassoBorda, fill=CorPassoFundo, minimum width=4cm, minimum height=1cm, align=center, rounded corners=3pt},
+    emphasis/.style={rectangle, draw=CorDestaqueBorda, fill=CorDestaqueFundo, minimum width=4cm, minimum height=1cm, align=center, rounded corners=3pt, font=\sffamily\bfseries\small},
+    hub/.style={ellipse, draw=CorHubBorda, fill=CorHubFundo, minimum width=4.2cm, minimum height=1.2cm, align=center},
+    % Estilos das Linhas/Setas
+    mainline/.style={->, line width=1.2pt, draw=CorSetaPrincipal},
+    highlightline/.style={->, line width=1.2pt, draw=CorSetaDestaque},
+    feedbackline/.style={->, line width=1pt, draw=CorSetaFeedback, dashed}
+]
+
+    % --- COLUNA DA ESQUERDA: FLUXO INTERNO DO CIENTISTA ---
+    \node[stepbox] (obs) {\textbf{1. Observation}\\Identify phenomenon};
+    
+    \node[emphasis, below=of obs] (search) {\textbf{2. Prior Art Search}\\Query the field};
+    
+    \node[stepbox, below=of search] (hypothesis) {\textbf{3. Hypothesis}\\Propose falsifiable explanation};
+    
+    \node[stepbox, below=of hypothesis] (experiment) {\textbf{4. Experimentation}\\Run controlled tests};
+    
+    \node[stepbox, below=of experiment] (analysis) {\textbf{5. Data Analysis}\\Validate or reject hypothesis};
+
+    % --- COLUNA DA DIREITA: CONTEXTO GLOBAL ---
+    \node[hub, right=2.5cm of search] (literature) {\textbf{State of the Art}\\\footnotesize Global Literature \& Patents};
+    
+    \node[emphasis, right=2.5cm of analysis] (publish) {\textbf{6. Publication}\\Share data \& methodology};
+    
+    \node[emphasis, above=of publish, node distance=1.8cm] (peer) {\textbf{7. Peer Review \& Replication}\\Community scrutiny \& testing};
+
+    % --- CONEXÕES E SETAS ---
+    % Fluxo Principal
+    \draw[mainline] (obs) -- (search);
+    \draw[mainline] (search) -- (hypothesis);
+    \draw[mainline] (hypothesis) -- (experiment);
+    \draw[mainline] (experiment) -- (analysis);
+    \draw[mainline] (analysis) -- (publish);
+    \draw[mainline] (publish) -- (peer);
+
+    % Interações com o "State of the Art"
+    \draw[highlightline, <->] (search) -- node[above, font=\sffamily\scriptsize] {Analyze gaps} (literature);
+    \draw[highlightline] (peer) -- node[right, font=\sffamily\scriptsize, align=center] {Consolidate as\\new paradigm} (literature);
+
+    % Loops de Feedback (Sem sobreposições)
+    % 1. Loop de Inconclusão (Contorna pela esquerda)
+    \draw[feedbackline] (analysis.west) -- ++(-1.2,0) |- (hypothesis.west)
+        node[pos=0.25, left, font=\sffamily\scriptsize, align=center] {Inconclusive\\results};
+
+    % 2. Loop de Falha de Replicação (Contorna por fora pela direita e por cima)
+    \draw[feedbackline] (peer.east) -- ++(1.5,0) |- ($(obs.north)+(0,0.8)$) -- (obs.north)
+        node[pos=0.15, right, font=\sffamily\scriptsize, align=center] {Replication\\failure};
+
+\end{tikzpicture}
+\end{document}
