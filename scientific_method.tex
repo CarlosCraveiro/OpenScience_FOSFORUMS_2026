@@ -1,10 +1,13 @@
 \documentclass[tikz,border=15pt]{standalone}
+% Pacotes adicionados para garantir que os acentos compilem corretamente
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
 
 \begin{document}
 
 % =========================================================================
-% PALETA DE CORES (Altere aqui para mudar a identidade visual do diagrama)
+% PALETA DE CORES
 % =========================================================================
 \definecolor{CorPassoBorda}{HTML}{1A5276}       % Azul Escuro (Borda dos passos normais)
 \definecolor{CorPassoFundo}{HTML}{EBF5FB}       % Azul Claro (Fundo dos passos normais)
@@ -16,18 +19,19 @@
 \definecolor{CorHubFundo}{HTML}{F5EEF8}         % Roxo Claro (Fundo do "State of the Art")
 
 \definecolor{CorSetaPrincipal}{HTML}{1A5276}    % Azul (Setas do fluxo principal)
-\definecolor{CorSetaDestaque}{HTML}{D35400}    % Laranja (Setas de conexão com o Hub)
+\definecolor{CorSetaDestaque}{HTML}{D35400}     % Laranja (Setas de conexão com o Hub)
 \definecolor{CorSetaFeedback}{HTML}{7D3C98}     % Roxo (Setas tracejadas de retorno)
 % =========================================================================
 
 \begin{tikzpicture}[
-    node distance=1.2cm and 2.2cm,
+    node distance=0.8cm and 2.5cm,
     >=Stealth,
     thick,
-    font=\sffamily\small,
-    % Configuração dos Estilos usando as cores definidas acima
-    stepbox/.style={rectangle, draw=CorPassoBorda, fill=CorPassoFundo, minimum width=4cm, minimum height=1cm, align=center, rounded corners=3pt},
-    emphasis/.style={rectangle, draw=CorDestaqueBorda, fill=CorDestaqueFundo, minimum width=4cm, minimum height=1cm, align=center, rounded corners=3pt, font=\sffamily\bfseries\small},
+    font=\sffamily\large,
+    % Configuração dos Estilos
+    stepbox/.style={rectangle, draw=CorPassoBorda, fill=CorPassoFundo, minimum width=4.2cm, minimum height=1cm, align=center, rounded corners=3pt},
+    emphasis/.style={rectangle, draw=CorDestaqueBorda, fill=CorDestaqueFundo, minimum width=4.2cm, minimum height=1cm, align=center, rounded corners=3pt, font=\sffamily\bfseries\large},
+    decisionbox/.style={diamond, aspect=2.2, draw=CorPassoBorda, fill=CorPassoFundo, minimum width=3.5cm, minimum height=1cm, align=center, inner sep=0pt},
     hub/.style={ellipse, draw=CorHubBorda, fill=CorHubFundo, minimum width=4.2cm, minimum height=1.2cm, align=center},
     % Estilos das Linhas/Setas
     mainline/.style={->, line width=1.2pt, draw=CorSetaPrincipal},
@@ -35,23 +39,23 @@
     feedbackline/.style={->, line width=1pt, draw=CorSetaFeedback, dashed}
 ]
 
-    % --- COLUNA DA ESQUERDA: FLUXO INTERNO DO CIENTISTA ---
-    \node[stepbox] (obs) {\textbf{1. Observation}\\Identify phenomenon};
+    % --- COLUNA DA ESQUERDA: FLUXO PRINCIPAL ---
+    \node[stepbox] (obs) {\textbf{Observation}};
+    \node[emphasis, below=of obs] (search) {\textbf{Bibliography Research}};
     
-    \node[emphasis, below=of obs] (search) {\textbf{2. Prior Art Search}\\Query the field};
+    % (Corrigido) Sem "line breaks" dentro de \textbf{}
+    \node[stepbox, below=of search] (hypothesis) {\textbf{Elaborate}\\ \textbf{Hypothesis}};
+    \node[stepbox, below=of hypothesis] (experiment) {\textbf{Experiments}};
+    \node[stepbox, below=of experiment] (analysis) {\textbf{Analyze Results}};
     
-    \node[stepbox, below=of search] (hypothesis) {\textbf{3. Hypothesis}\\Propose falsifiable explanation};
+    \node[decisionbox, below=of analysis] (decision) {\textbf{Hypotheses}\\ \textbf{Hold}};
     
-    \node[stepbox, below=of hypothesis] (experiment) {\textbf{4. Experimentation}\\Run controlled tests};
-    
-    \node[stepbox, below=of experiment] (analysis) {\textbf{5. Data Analysis}\\Validate or reject hypothesis};
+    \node[emphasis, below=of decision] (peer) {\textbf{Peer Review}};
+    \node[emphasis, below=of peer] (publish) {\textbf{Publication}};
 
     % --- COLUNA DA DIREITA: CONTEXTO GLOBAL ---
-    \node[hub, right=2.5cm of search] (literature) {\textbf{State of the Art}\\\footnotesize Global Literature \& Patents};
-    
-    \node[emphasis, right=2.5cm of analysis] (publish) {\textbf{6. Publication}\\Share data \& methodology};
-    
-    \node[emphasis, above=of publish, node distance=1.8cm] (peer) {\textbf{7. Peer Review \& Replication}\\Community scrutiny \& testing};
+    \node[hub, right=3.5cm of search] (literature) {\textbf{State of the Art}};
+    \node[hub, above=1.5cm of literature] (researchers) {\textbf{Other Researchers}};
 
     % --- CONEXÕES E SETAS ---
     % Fluxo Principal
@@ -59,21 +63,22 @@
     \draw[mainline] (search) -- (hypothesis);
     \draw[mainline] (hypothesis) -- (experiment);
     \draw[mainline] (experiment) -- (analysis);
-    \draw[mainline] (analysis) -- (publish);
-    \draw[mainline] (publish) -- (peer);
+    \draw[mainline] (analysis) -- (decision);
+    
+    % Saída SIM do losango
+    \draw[mainline] (decision) -- node[right, font=\sffamily\small\bfseries] {\textbf{YES}} (peer);
+    \draw[highlightline] (peer) -- (publish);
 
-    % Interações com o "State of the Art"
-    \draw[highlightline, <->] (search) -- node[above, font=\sffamily\scriptsize] {Analyze gaps} (literature);
-    \draw[highlightline] (peer) -- node[right, font=\sffamily\scriptsize, align=center] {Consolidate as\\new paradigm} (literature);
+    % Interações com o "Estado da Arte"
+    \draw[highlightline, <->] (search) -- node[above, font=\sffamily\small] {Analyze gaps} (literature);
+    
+    \draw[highlightline, <->] (researchers) -- node[right, font=\sffamily\small, align=center] {Analyze and\\ contribute} (literature);
 
-    % Loops de Feedback (Sem sobreposições)
-    % 1. Loop de Inconclusão (Contorna pela esquerda)
-    \draw[feedbackline] (analysis.west) -- ++(-1.2,0) |- (hypothesis.west)
-        node[pos=0.25, left, font=\sffamily\scriptsize, align=center] {Inconclusive\\results};
+    % Ligação Publicação -> Estado da Arte (Faz a curva 90 graus direitinho)
+    \draw[highlightline] (publish.east) -| (literature.south);
 
-    % 2. Loop de Falha de Replicação (Contorna por fora pela direita e por cima)
-    \draw[feedbackline] (peer.east) -- ++(1.5,0) |- ($(obs.north)+(0,0.8)$) -- (obs.north)
-        node[pos=0.15, right, font=\sffamily\scriptsize, align=center] {Replication\\failure};
+    % Loop de Feedback (Saída NÃO do losango, contornando pela esquerda)
+    \draw[feedbackline] (decision.west) -- ++(-1.8,0) node[above, font=\sffamily\small\bfseries] {\textbf{NO}\phantom{Nooo}} |- (hypothesis.west);
 
 \end{tikzpicture}
 \end{document}
