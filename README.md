@@ -25,7 +25,7 @@ Please note that this license applies **strictly to the textual content and the 
 You can access the recording at [FOSFORUMS YouTube channel](#). It starts at `XX:XX`
 
 ## The slides
-You can access the slides at the file [`FOSFORUMS_2026_Open_Science.pdf`](https://github.com/CarlosCraveiro/FOSFORUMS_2026/blob/main/FOSFORUMS_2026_Open_Science.pdf).
+You can access the slides at the file [`FOSFORUMS_2026_Open_Science.pdf`](https://github.com/CarlosCraveiro/OpenScience_FOSFORUMS_2026/blob/main/FOSFORUMS_2026_Open_Science.pdf).
 
 ## To compile the presentation
 
